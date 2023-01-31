@@ -40,10 +40,9 @@ router = APIRouter()
 async def get_all_user() -> dict:
     
 
-    user_obj = await User.find(fetch_links=True).project(UserOut).to_list()
-    
-    return user_obj
-
+    users_out = await User.find(fetch_links=True).project(UserOut).to_list()
+    total_users = len(users_out)
+    return {"data": {"count": total_users, "items": users_out}}
 
 @router.delete("/delete/{ID}", status_code = 200)
 async def delete_a_user(ID:PydanticObjectId,response:Response) -> dict:
