@@ -34,6 +34,28 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
 
+@router.get("/all",status_code =200)
+async def get_all_user() -> dict:
+    
+
+    user_obj = await User.find(fetch_links=True).to_list()
+    
+    return user_obj
+
+
+@router.delete("/delete/{ID}", status_code = 200)
+async def delete_a_user(ID:PydanticObjectId,response:Response) -> dict:
+    try:
+        user = await User.find_one(User.id==ID, fetch_links=True)
+        await user.delete()
+        return{"message":f"user with ID: {ID} successfully deleted"}
+    except:
+        response.status_code = 400
+        return {"message":"something went wrong! or empty user list"}
+    
+    
+    
+
 @router.post("/signup", response_description="User added to the database",status_code=201)
 async def create_account(data: UserRegistrationSchema,response:Response) -> dict:
     
@@ -134,7 +156,7 @@ async def get_user_profile_data(response:Response, Authorize: AuthJWT = Depends(
 
 
 
-@router.post("/profile/image", status_code = 200, response_description="Upload profile image")
+@router.post("/profile/image/update", status_code = 200, response_description="Upload profile image")
 async def upload_profile_image(data:ImageSchema, response:Response, Authorize: AuthJWT = Depends()):
     
     Authorize.jwt_required()
@@ -180,7 +202,7 @@ async def upload_profile_image(data:ImageSchema, response:Response, Authorize: A
         return{"message":"User not found"}
     
 
-@router.post("/profile/data", status_code = 200, response_description="data updated")
+@router.post("/profile/update", status_code = 200, response_description="data updated")
 async def update_profile_data(data:ProfileDataSchema, response:Response, Authorize: AuthJWT = Depends()):
     
     Authorize.jwt_required()
