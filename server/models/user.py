@@ -1,8 +1,10 @@
 from typing import Optional
-from beanie import Document, PydanticObjectId
-from pydantic import BaseModel, EmailStr, Field,validator
 from datetime import date
 from enum import Enum
+
+from beanie import Document, PydanticObjectId
+from pydantic import BaseModel, EmailStr, Field,validator
+from pydantic_collections import BaseCollectionModel
 
 today = date.today()
 
@@ -43,9 +45,7 @@ class User(Document):
     class Settings:
         name = "users"
 
-    
 
-   
 class UserRegistrationSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
@@ -66,7 +66,7 @@ class UserLogin(BaseModel):
             }
         }
         
-        
+
 class UserOut(BaseModel):
     id: PydanticObjectId = Field(alias='_id')
     first_name: Optional[str]
@@ -81,8 +81,12 @@ class UserOut(BaseModel):
     is_affiliate: bool 
     created: str 
     active: bool
-    
-    
+
+
+class UserCollection(BaseCollectionModel[UserOut]):
+    pass
+
+
 class OtpSchema(BaseModel):
     email: EmailStr = Field(...)
     otp: str = Field(...)
@@ -104,8 +108,6 @@ class ProfileDataSchema(BaseModel):
     bio:Optional[str] = None
     
     
-    
-
 def SuccessResponseModel(data, code, message):
     return { "data": [data], "code": code, "message": message }
 
