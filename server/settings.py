@@ -20,6 +20,7 @@ class Settings(BaseModel):
     #OTP Setting
     OTP_SECRET_KEY=config("OTP_SECRET_KEY")
     OTP_EXPIRES=config("OTP_EXPIRES")
+    OTP_DIGIT=config("OTP_DIGIT")
     
     #Social Auth Setting
         #google

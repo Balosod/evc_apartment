@@ -15,7 +15,7 @@ mail_env = Environment(
 fm = FastMail(conf)
 
 class OTPManager:
-    totp = pyotp.TOTP(CONFIG_SETTINGS.OTP_SECRET_KEY, interval=int(CONFIG_SETTINGS.OTP_EXPIRES))
+    totp = pyotp.TOTP(CONFIG_SETTINGS.OTP_SECRET_KEY, interval=int(CONFIG_SETTINGS.OTP_EXPIRES), digits=int(CONFIG_SETTINGS.OTP_DIGIT))
 
     @classmethod
     def generate(cls):
