@@ -67,7 +67,23 @@ class UserLogin(BaseModel):
                 "password": "yoursecretpa55word",
             }
         }
-
+        
+        
+class UserOut(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    bio:str | None = None
+    email: str
+    phone:str | None = None
+    address:str | None = None
+    img:str | None = None
+    account_type:str | None = None
+    is_admin:bool
+    is_affiliate:bool 
+    created:str 
+    active: bool
+    
+    
 class OtpSchema(BaseModel):
     email: EmailStr = Field(...)
     otp: str = Field(...)

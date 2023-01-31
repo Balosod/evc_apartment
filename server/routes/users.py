@@ -10,6 +10,7 @@ from ..utils.helpers import fm
 from ..utils.helpers import EmailManager
 from ..utils.s3_storage import client
 from ..settings import CONFIG_SETTINGS
+from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
 # from auth.auth_handler import signJWT
@@ -20,6 +21,7 @@ from server.models.user import (
     User,
     UserRegistrationSchema,
     UserLogin,
+    UserOut,
     OtpSchema,
     ImageSchema,
     ProfileDataSchema,
@@ -38,7 +40,7 @@ router = APIRouter()
 async def get_all_user() -> dict:
     
 
-    user_obj = await User.find(fetch_links=True).to_list()
+    user_obj = await User.find(fetch_links=True).project(UserOut).to_list()
     
     return user_obj
 
