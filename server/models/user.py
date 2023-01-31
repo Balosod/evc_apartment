@@ -1,8 +1,10 @@
 from typing import Optional
-from beanie import Document, PydanticObjectId
-from pydantic import BaseModel, EmailStr, Field,validator
 from datetime import date
 from enum import Enum
+
+from beanie import Document, PydanticObjectId
+from pydantic import BaseModel, EmailStr, Field,validator
+from pydantic_collections import BaseCollectionModel
 
 today = date.today()
 
@@ -81,7 +83,12 @@ class UserOut(BaseModel):
     is_affiliate: bool 
     created: str 
     active: bool
-    
+
+
+class UserCollection(BaseCollectionModel[UserOut]):
+    pass
+
+
     
 class OtpSchema(BaseModel):
     email: EmailStr = Field(...)
