@@ -27,7 +27,6 @@ from server.models.user import (
     ProfileDataSchema,
     EmailSchema,
     SuccessResponseModel,
-    UserCollection,
     ErrorResponseModel
 )
 
@@ -39,10 +38,11 @@ router = APIRouter()
 
 @router.get("/all",status_code =200)
 async def get_all_user() -> dict:
-    all_users = await User.find_all().to_list()
-    users_out = UserCollection(all_users)
-    total_users = len(users_out)
-    return {"data": {"count": total_users, "items": users_out}}
+    
+
+    user_obj = await User.find(fetch_links=True).project(UserOut).to_list()
+    
+    return user_obj
 
 
 @router.delete("/delete/{ID}", status_code = 200)
@@ -56,6 +56,8 @@ async def delete_a_user(ID:PydanticObjectId,response:Response) -> dict:
         return {"message":"something went wrong! or empty user list"}
     
     
+    
+
 @router.post("/signup", response_description="User added to the database",status_code=201)
 async def create_account(data: UserRegistrationSchema,response:Response) -> dict:
     
