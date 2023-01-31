@@ -1,7 +1,5 @@
-from uuid import UUID, uuid4
-from datetime import datetime
 from typing import Optional
-from beanie import Document
+from beanie import Document, PydanticObjectId
 from pydantic import BaseModel, EmailStr, Field,validator
 from datetime import date
 from enum import Enum
@@ -10,7 +8,7 @@ today = date.today()
 
 class accountType(str,Enum):
     personal_account = "personal"
-    cooperate_account = "cooperate"
+    cooperate_account = "corporate"
     
 class User(Document):
     first_name: Optional[str] = None
@@ -70,17 +68,18 @@ class UserLogin(BaseModel):
         
         
 class UserOut(BaseModel):
-    first_name: str | None = None
-    last_name: str | None = None
-    bio:str | None = None
-    email: str
-    phone:str | None = None
-    address:str | None = None
-    img:str | None = None
-    account_type:str | None = None
-    is_admin:bool
-    is_affiliate:bool 
-    created:str 
+    id: PydanticObjectId
+    first_name: Optional[str]
+    last_name: Optional[str]
+    bio: Optional[str]
+    email: EmailStr
+    phone: Optional[str]
+    address: Optional[str]
+    img: Optional[str]
+    account_type: Optional[str]
+    is_admin: bool
+    is_affiliate: bool 
+    created: str 
     active: bool
     
     
