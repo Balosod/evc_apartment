@@ -18,6 +18,7 @@ from fastapi_jwt_auth import AuthJWT
 
 from server.models.user import (
     User,
+    UserRegistrationSchema,
     UserLogin,
     OtpSchema,
     ImageSchema,
@@ -34,10 +35,10 @@ router = APIRouter()
 
 
 @router.post("/signup", response_description="User added to the database",status_code=201)
-async def create_account(user: User,response:Response) -> dict:
+async def create_account(data: UserRegistrationSchema,response:Response) -> dict:
     
     email_regex = r'com$'
-    match = re.search(email_regex, user.email)
+    match = re.search(email_regex, data.email)
     if not match:
         response.status_code = 400
         return HTTPException(
@@ -45,18 +46,36 @@ async def create_account(user: User,response:Response) -> dict:
             detail="Email is invalid"
         )
         
-    user_exists = await User.find_one(User.email == user.email)
+    email_exists = await User.find_one(User.email == data.email)
 
-    if user_exists:
+    if email_exists:
         response.status_code = 400
         return HTTPException(
             status_code=400,
             detail="Email already exists!"
         )
+    phone_exists = await User.find_one(User.phone == data.phone)
+    
+    if phone_exists:
+        response.status_code = 400
+        return HTTPException(
+            status_code=400,
+            detail="Phone number already exists!"
+        )
 
-    user.password = pwd_context.hash(user.password)
+    hash_password = pwd_context.hash(data.password)
+    
+    user = User(
+        first_name = data.first_name,
+        last_name = data.last_name,
+        email = data.email,
+        phone = data.phone,
+        password = hash_password,
+        account_type = data.account_type
+    )
+    
     await user.create() 
-    message  = EmailManager.send_welcome_msg(user.email)
+    message  = EmailManager.send_welcome_msg(data.email)
     await fm.send_message(message)
     return SuccessResponseModel(user, 201, "Account successfully created!" )
 

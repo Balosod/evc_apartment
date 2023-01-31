@@ -8,7 +8,7 @@ from enum import Enum
 
 today = date.today()
 
-class account_type(str,Enum):
+class accountType(str,Enum):
     personal_account = "personal"
     cooperate_account = "cooperate"
     
@@ -21,7 +21,7 @@ class User(Document):
     address:Optional[str] = None
     img:Optional[str] = None
     password: str
-    account:Optional[account_type] = None
+    account_type:Optional[accountType] = None
     is_admin:bool = False
     is_affiliate:bool = False
     created:str = today.strftime("%B %d, %Y")
@@ -47,6 +47,14 @@ class User(Document):
 
     
 
+   
+class UserRegistrationSchema(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: EmailStr
+    phone:Optional[str] = None
+    password: str
+    account_type:Optional[accountType] = None
 
 class UserLogin(BaseModel):
     email: EmailStr = Field(...)
