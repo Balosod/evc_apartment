@@ -39,7 +39,6 @@ router = APIRouter()
 
 @router.get("/all",status_code =200)
 async def get_all_user() -> dict:
-    # user_obj = await User.find(fetch_links=True).project(UserOut).to_list()
     all_users = await User.find_all().to_list()
     users_out = UserCollection(all_users)
     total_users = len(users_out)
