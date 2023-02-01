@@ -37,7 +37,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
 
-@router.get("/all",status_code =200)
+@router.get("/all", status_code=200)
 async def get_all_user() -> dict:
     all_users = await User.find_all().to_list()
     users_out = UserCollection(all_users)
@@ -113,7 +113,7 @@ async def login_user(user: UserLogin, response:Response, Authorize: AuthJWT = De
     response.status_code = 400
     return HTTPException(
             status_code=400,
-            detail="User with that email doesn't exist or password incorrect"
+            detail="Incorrect email or password"
         )
 
 

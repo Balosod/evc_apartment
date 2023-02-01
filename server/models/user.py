@@ -69,7 +69,7 @@ class UserLogin(BaseModel):
         
         
 class UserOut(BaseModel):
-    id: PydanticObjectId = Field(alias='_id')
+    id: PydanticObjectId = Field()
     first_name: Optional[str]
     last_name: Optional[str]
     bio: Optional[str]
