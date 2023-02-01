@@ -1,6 +1,7 @@
 from typing import Optional
 from beanie import Document, PydanticObjectId
-from pydantic import BaseModel, EmailStr, Field,validator
+from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic_collections import BaseCollectionModel
 from datetime import date
 from enum import Enum
 
@@ -13,16 +14,16 @@ class accountType(str,Enum):
 class User(Document):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    bio:Optional[str] = None
+    bio: Optional[str] = None
     email: EmailStr
-    phone:Optional[str] = None
-    address:Optional[str] = None
-    img:Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    img: Optional[str] = None
     password: str
-    account_type:Optional[accountType] = None
-    is_admin:bool = False
-    is_affiliate:bool = False
-    created:str = today.strftime("%B %d, %Y")
+    account_type: Optional[accountType] = None
+    is_admin: bool = False
+    is_affiliate: bool = False
+    created: str = today.strftime("%B %d, %Y")
     active: bool = False
     
     @validator('password', always=True)
@@ -50,7 +51,7 @@ class UserRegistrationSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     email: EmailStr
-    phone:Optional[str] = None
+    phone: Optional[str] = None
     password: str
     account_type:Optional[accountType] = None
 
