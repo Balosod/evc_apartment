@@ -81,7 +81,10 @@ class UserOut(BaseModel):
     is_affiliate: bool 
     created: str 
     active: bool
-    
+
+
+class UserCollection(BaseCollectionModel[UserOut]):
+    pass
     
 class OtpSchema(BaseModel):
     email: EmailStr = Field(...)
