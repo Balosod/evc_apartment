@@ -114,7 +114,7 @@ async def login_user(user: UserLogin, response:Response, Authorize: AuthJWT = De
     response.status_code = 400
     return HTTPException(
             status_code=400,
-            detail="Invalid email or password"
+            detail="Incorrect email or password"
         )
 
 
