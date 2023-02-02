@@ -6,7 +6,7 @@ import re
 import base64
 import uuid
 from ..utils import auth_service
-from ..utils.helpers import fm
+from ..utils.helpers import api_instance
 from ..utils.helpers import EmailManager
 from ..utils.s3_storage import client
 from ..settings import CONFIG_SETTINGS
@@ -96,26 +96,40 @@ async def create_account(data: UserRegistrationSchema,response:Response) -> dict
         password = hash_password,
         account_type = data.account_type
     )
+    try:
+        send_smtp_email  = EmailManager.send_welcome_msg(data.email)
+        api_response = api_instance.send_transac_email(send_smtp_email)
+        print(api_response)
+        await user.create()
+        return SuccessResponseModel(user, 201, "Account successfully created!" )
     
-    await user.create() 
-    message  = EmailManager.send_welcome_msg(data.email)
-    await fm.send_message(message)
-    return SuccessResponseModel(user, 201, "Account successfully created!" )
+    except:
+        return HTTPException(
+            status_code=400,
+            detail="User not created"
+        )
+
 
 @router.post("/auth/login", response_description="User login",status_code = 200)
 async def login_user(user: UserLogin, response:Response, Authorize: AuthJWT = Depends()):
     user_acct = await User.find_one(User.email == user.email)
+    try:
+        if user_acct and user_acct.active and pwd_context.verify(user.password, user_acct.password):
+            access_token = Authorize.create_access_token(subject=user.email)
+            refresh_token = Authorize.create_refresh_token(subject=user.email)
+            return {"access_token": access_token, "refresh_token": refresh_token}
 
-    if user_acct and user_acct.active and pwd_context.verify(user.password, user_acct.password):
-        access_token = Authorize.create_access_token(subject=user.email)
-        refresh_token = Authorize.create_refresh_token(subject=user.email)
-        return {"access_token": access_token, "refresh_token": refresh_token}
-
-    response.status_code = 400
-    return HTTPException(
-            status_code=400,
-            detail="Incorrect email or password"
-        )
+        response.status_code = 400
+        return HTTPException(
+                status_code=400,
+                detail="Incorrect email or password"
+            )
+    except:
+        response.status_code = 400
+        return HTTPException(
+                status_code=400,
+                detail="Invalid email or Password"
+            )
 
 
 @router.post("/refresh", response_description="Get new access token")
