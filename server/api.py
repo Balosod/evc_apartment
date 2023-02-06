@@ -7,6 +7,9 @@ from server.routes.booking_history import router as BookingRouter
 from server.routes.landingpage import router as LandingPageRouter
 from server.routes.admin import router as AdminRouter
 from server.routes.affiliate import router as AffiliateRouter
+from server.routes.social_auth import router as socialRouter
+
+
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from .settings import CONFIG_SETTINGS
@@ -40,6 +43,7 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 
 
 app.include_router(UserRouter, tags=["Users"], prefix="/users")
+app.include_router(socialRouter, tags=["social_auth"], prefix="/social")
 
 app.include_router(PropertyRouter, tags=["Property"], prefix="/property")
 app.include_router(BookingRouter, tags=["Booking"], prefix="/booking")

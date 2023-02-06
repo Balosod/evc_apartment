@@ -65,12 +65,21 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
         response.status_code = 400
         return {"message":"Something went wrong"}
     
+
+
+@router.get("/all",status_code =200)
+async def get_all_property(Authorize: AuthJWT = Depends()) -> dict:
     
+    Authorize.jwt_required()
+    
+    all_property = await Property.find(Property.status == "Approve" , fetch_links=True).to_list()
+
+    return all_property
 
 @router.get("/all/{category}",status_code =200)
-async def get_property_by_category(category:str) -> dict:
+async def get_property_by_category(category:str,Authorize: AuthJWT = Depends()) -> dict:
     
-    #Authorize.jwt_required()
+    Authorize.jwt_required()
     
     all_property = await Property.find(And((Property.category == category),(Property.status == "Approve")), fetch_links=True).to_list()
 

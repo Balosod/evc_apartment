@@ -30,6 +30,9 @@ class Settings(BaseModel):
     SOCIAL_AUTH_FACEBOOK_KEY=config("SOCIAL_AUTH_FACEBOOK_KEY")
     SOCIAL_AUTH_FACEBOOK_SECRET=config("SOCIAL_AUTH_FACEBOOK_SECRET")
     
+    #MAIL
+    SEND_IN_BLUE_API_KEY=config("SEND_IN_BLUE_API_KEY")
+    
     #S3 Bucket setting
     USE_SPACES=True
     REGION_NAME=config("REGION_NAME")
@@ -40,18 +43,6 @@ class Settings(BaseModel):
     ACL=config("ACL")
     
 
-
-conf = ConnectionConfig(
-    MAIL_USERNAME = config("MAIL_USERNAME"),
-    MAIL_PASSWORD = config("MAIL_PASSWORD"),
-    MAIL_FROM = config("MAIL_FROM"),
-    MAIL_PORT = 465,
-    MAIL_SERVER = config("MAIL_SERVER"),
-    MAIL_STARTTLS=False,
-    MAIL_SSL_TLS=True,
-    USE_CREDENTIALS = True,
-)
- 
 CONFIG_SETTINGS = Settings()
 
 
