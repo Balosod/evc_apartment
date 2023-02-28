@@ -161,7 +161,7 @@ async def get_user_profile_data(response:Response, Authorize: AuthJWT = Depends(
     Authorize.jwt_required()
     current_user = Authorize.get_jwt_subject()
     
-    user = await User.find_one(User.email == current_user)
+    user = await User.find_one(User.email == current_user).project(UserOut)
     if user:
         return user
     else:
@@ -216,7 +216,7 @@ async def upload_profile_image(data:ImageSchema, response:Response, Authorize: A
         return{"message":"User not found"}
     
 
-@router.post("/profile/update", status_code = 200, response_description="data updated")
+@router.put("/profile/update", status_code = 200, response_description="data updated")
 async def update_profile_data(data:ProfileDataSchema, response:Response, Authorize: AuthJWT = Depends()):
     
     Authorize.jwt_required()
