@@ -15,7 +15,7 @@ from datetime import date
 
 router = APIRouter()
 
-today = date.today()
+
 
 
 
@@ -29,6 +29,9 @@ async def get_ID(itemID):
 
 @router.post("/create/{itemID}", status_code = 200)
 async def book_a_property(data:BookingSchema,itemID:PydanticObjectId,response:Response, Authorize: AuthJWT = Depends()) -> dict:
+    
+    today = date.today()
+    
     Authorize.jwt_required()
     current_user = Authorize.get_jwt_subject()
     

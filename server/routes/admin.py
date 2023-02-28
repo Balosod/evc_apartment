@@ -15,7 +15,7 @@ from datetime import date
 
 router = APIRouter()
 
-today = date.today()
+
 
 
 
@@ -197,7 +197,7 @@ async def get_all_user() -> dict:
 
 @router.post("/add/affiliate",status_code =201)
 async def add_an_affiliate(data:EmailSchema,response:Response) -> dict:
-    
+    today = date.today()
     #Authorize.jwt_required()
     
     try:
