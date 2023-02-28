@@ -161,7 +161,7 @@ async def get_user_profile_data(response:Response, Authorize: AuthJWT = Depends(
     Authorize.jwt_required()
     current_user = Authorize.get_jwt_subject()
     
-    user = await User.find_one(User.email == current_user).project(UserOut)
+    user = await User.find_one(User.email == current_user)
     if user:
         return user
     else:
