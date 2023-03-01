@@ -79,7 +79,7 @@ class PropertySchema(BaseModel):
     nearest_area:str
     category:PropertyCategory
     airport:Optional[AirportOptions] = AirportOptions.no
-    discount: List[ApplicableDiscount]
+    discount: Optional[List[ApplicableDiscount]]
     food_option:list
     services:list
     images:Optional[list] = None
