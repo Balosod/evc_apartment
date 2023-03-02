@@ -50,6 +50,9 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
             category = data.category,
             property_type = house_property_type,
             airport = data.airport,
+            breakfast = data.breakfast,
+            lunch = data.lunch,
+            dinner = data.dinner,
             discount = price_list,
             food_option = data.food_option,
             services = data.services,
@@ -61,7 +64,7 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
         await house_property.create()
         
         return {"message":"successful"}
-    except Execption as e:
+    except Exception as e:
         response.status_code = 400
         return {"message":f"{e}"}
     

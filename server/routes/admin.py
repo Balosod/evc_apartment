@@ -129,6 +129,15 @@ async def all_approved_property() -> dict:
 
     return all_property
 
+@router.get("/all/unapproved/property",status_code =200)
+async def all_approved_property() -> dict:
+    
+    #Authorize.jwt_required()
+    
+    all_property = await Property.find(Property.status == "Reject", fetch_links=True).to_list()
+
+    return all_property
+
 
 @router.get("/all/property",status_code =200)
 async def all_property() -> dict:

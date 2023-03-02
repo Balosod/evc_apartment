@@ -57,7 +57,11 @@ class Property(Document):
     nearest_area:str
     category:PropertyCategory
     property_type:ProperyType = ProperyType.EVCA_Affiliate
-    airport:Optional[AirportOptions] = AirportOptions.no
+    #airport:Optional[AirportOptions] = AirportOptions.no
+    airport:Optional[bool] = False
+    breakfast:Optional[bool] = False
+    lunch:Optional[bool] = False
+    dinner:Optional[bool] = False
     discount: List[Link[ApplicableDiscount]] = None
     food_option:Optional[list] = None
     services:Optional[list] = None
@@ -78,7 +82,11 @@ class PropertySchema(BaseModel):
     description:str
     nearest_area:str
     category:PropertyCategory
-    airport:Optional[AirportOptions] = AirportOptions.no
+    #airport:Optional[AirportOptions] = AirportOptions.no
+    airport:Optional[bool] = False
+    breakfast:Optional[bool] = False
+    lunch:Optional[bool] = False
+    dinner:Optional[bool] = False
     discount: Optional[List[ApplicableDiscount]]
     food_option:list
     services:list
