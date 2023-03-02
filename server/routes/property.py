@@ -60,10 +60,10 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
             
         await house_property.create()
         
-        return {"message":"Successfully"}
+        return {"message":"successful"}
     except Execption as e:
         response.status_code = 400
-        return {"message":f"{e}Something went wrong"}
+        return {"message":f"{e}"}
     
 
 
