@@ -76,14 +76,6 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
     
 
 
-# @router.get("/all",status_code =200)
-# async def get_all_property() -> dict:
-    
-    
-#     all_property = await Property.find(Property.approval_status == True , fetch_links=True).to_list()
-
-#     return all_property
-
 @router.get("/all",status_code =200)
 async def get_all_property(location:str|None=None,capacity:int|None=None) -> dict:
    
