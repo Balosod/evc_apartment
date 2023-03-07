@@ -36,6 +36,20 @@ from server.models.user import (
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
+def user_data(user):
+    return {"first_name":user.first_name,
+            "last_name":user.last_name,
+            "bio":user.bio,
+            "email":user.email,
+            "phone":user.phone,
+            "address":user.address,
+            "account_type":user.account_type,
+            "is_admin":user.is_admin,
+            "is_affiliate":user.is_affiliate,
+            "created":user.created,
+            "active":"user.active"}
+    
+    
 
 @router.get("/all", status_code=200)
 async def get_all_user() -> dict:
@@ -98,9 +112,9 @@ async def create_account(data: UserRegistrationSchema,response:Response) -> dict
     try:
         send_smtp_email  = EmailManager.send_welcome_msg(data.email)
         api_response = api_instance.send_transac_email(send_smtp_email)
-        print(api_response)
         await user.create()
-        return SuccessResponseModel(user, 201, "Account successfully created!" )
+        return SuccessResponseModel(user_data(user), 201, "successful" )
+    
     
     except:
         return HTTPException(
@@ -116,7 +130,7 @@ async def login_user(user: UserLogin, response:Response, Authorize: AuthJWT = De
         if user_acct and user_acct.active and pwd_context.verify(user.password, user_acct.password):
             access_token = Authorize.create_access_token(subject=user.email)
             refresh_token = Authorize.create_refresh_token(subject=user.email)
-            return {"access_token": access_token, "refresh_token": refresh_token}
+            return {"access_token": access_token, "refresh_token": refresh_token,"user_data":user_data(user_acct)}
 
         response.status_code = 400
         return HTTPException(

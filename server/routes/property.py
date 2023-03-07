@@ -4,6 +4,7 @@ from beanie.operators import RegEx,And,Or,In
 from ..utils import upload_image_helper, upload_video_helper
 from ..settings import CONFIG_SETTINGS
 from server.models.user import User
+from ..utils.filter_helper import filters
 from server.models.property import Property,ApplicableDiscount,PropertySchema,PropertyImages,PropertyVideos
 
 
@@ -58,6 +59,8 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
             two_showers = data.two_showers,
             luxury_bedroom = data.luxury_bedroom,
             kitchen = data.kitchen,
+            price = data.price,
+            capacity = data.capacity,
             discount = price_list,
             owner_id=user.id,
             image=image_obj,
@@ -73,21 +76,27 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
     
 
 
-@router.get("/all",status_code =200)
-async def get_all_property(Authorize: AuthJWT = Depends()) -> dict:
+# @router.get("/all",status_code =200)
+# async def get_all_property() -> dict:
     
-    Authorize.jwt_required()
     
-    all_property = await Property.find(Property.status == "Approve" , fetch_links=True).to_list()
+#     all_property = await Property.find(Property.approval_status == True , fetch_links=True).to_list()
 
-    return all_property
+#     return all_property
+
+@router.get("/all",status_code =200)
+async def get_all_property(location:str|None=None,capacity:int|None=None) -> dict:
+   
+    property_search = await filters(location,capacity)
+   
+    return property_search
+
 
 @router.get("/all/{category}",status_code =200)
-async def get_property_by_category(category:str,Authorize: AuthJWT = Depends()) -> dict:
+async def get_property_by_category(category:str) -> dict:
     
-    Authorize.jwt_required()
     
-    all_property = await Property.find(And((Property.category == category),(Property.status == "Approve")), fetch_links=True).to_list()
+    all_property = await Property.find(And((Property.category == category),(Property.approval_status == True)), fetch_links=True).to_list()
 
     return all_property
     

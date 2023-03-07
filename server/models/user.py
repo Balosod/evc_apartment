@@ -16,9 +16,9 @@ class User(Document):
     last_name: Optional[str] = None
     bio: Optional[str] = None
     email: EmailStr
-    phone: Optional[int] = None
-    address: Optional[str] = None
-    img: Optional[str] = None
+    phone:Optional[int] = None
+    address:Optional[str] = None
+    img:Optional[str] = None
     password: str
     account_type: Optional[accountType] = None
     is_admin: bool = False
@@ -51,7 +51,7 @@ class UserRegistrationSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     email: EmailStr
-    phone: Optional[int] = None
+    phone:Optional[int] = None
     password: str
     account_type:Optional[accountType] = None
 
