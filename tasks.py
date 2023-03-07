@@ -8,7 +8,7 @@ from server.models.booking_history import Booking
 from datetime import date
 
 
-today = date.today()
+
 
 
 huey = SqliteHuey(filename='/tmp/demo.db')
@@ -22,6 +22,7 @@ async def init_db():
 
 
 async def async_function():
+    today = date.today()
     await init_db()
     date = today.strftime("%d/%m/%Y")
     booked_property = await Booking.find().to_list()

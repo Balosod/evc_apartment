@@ -50,9 +50,15 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
             category = data.category,
             property_type = house_property_type,
             airport = data.airport,
+            breakfast = data.breakfast,
+            lunch = data.lunch,
+            dinner = data.dinner,
+            wifi = data.wifi,
+            maximum_security = data.maximum_security,
+            two_showers = data.two_showers,
+            luxury_bedroom = data.luxury_bedroom,
+            kitchen = data.kitchen,
             discount = price_list,
-            food_option = data.food_option,
-            services = data.services,
             owner_id=user.id,
             image=image_obj,
             video=video_obj,
@@ -60,10 +66,10 @@ async def create_property(data:PropertySchema,response:Response,Authorize: AuthJ
             
         await house_property.create()
         
-        return {"message":"house_property Successfully uploaded"}
-    except:
+        return {"message":"successful"}
+    except Exception as e:
         response.status_code = 400
-        return {"message":"Something went wrong"}
+        return {"message":f"{e}"}
     
 
 

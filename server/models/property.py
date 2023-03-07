@@ -6,10 +6,6 @@ from pydantic import BaseModel, EmailStr, Field,validator
 from enum import Enum
 
 
-class AirportOptions(str,Enum):
-    yes = "yes"
-    no = "no"
-
 class ProperyType(str,Enum):
     EVC_Apartment = "EVC_Apartment"
     EVCA_Affiliate = "EVCA_Affiliate"
@@ -57,10 +53,16 @@ class Property(Document):
     nearest_area:str
     category:PropertyCategory
     property_type:ProperyType = ProperyType.EVCA_Affiliate
-    airport:Optional[AirportOptions] = AirportOptions.no
+    airport:Optional[bool] = False
+    breakfast:Optional[bool] = False
+    lunch:Optional[bool] = False
+    dinner:Optional[bool] = False
+    wifi:Optional[bool] = False
+    maximum_security:Optional[bool] = False
+    two_showers:Optional[bool] = False
+    luxury_bedroom:Optional[bool] = False
+    kitchen:Optional[bool] = False
     discount: List[Link[ApplicableDiscount]] = None
-    food_option:Optional[list] = None
-    services:Optional[list] = None
     condition:Optional[ProperyCondition] = ProperyCondition.Available
     status:Optional[ProperyStatus] = ProperyStatus.Reject
     order:Optional[int] = 0
@@ -78,10 +80,16 @@ class PropertySchema(BaseModel):
     description:str
     nearest_area:str
     category:PropertyCategory
-    airport:Optional[AirportOptions] = AirportOptions.no
-    discount: List[ApplicableDiscount]
-    food_option:list
-    services:list
+    airport:Optional[bool] = False
+    breakfast:Optional[bool] = False
+    lunch:Optional[bool] = False
+    dinner:Optional[bool] = False
+    wifi:Optional[bool] = False
+    maximum_security:Optional[bool] = False
+    two_showers:Optional[bool] = False
+    luxury_bedroom:Optional[bool] = False
+    kitchen:Optional[bool] = False
+    discount: Optional[List[ApplicableDiscount]]
     images:Optional[list] = None
     videos:Optional[list] = None
         

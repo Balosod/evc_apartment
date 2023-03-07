@@ -216,7 +216,7 @@ async def upload_profile_image(data:ImageSchema, response:Response, Authorize: A
         return{"message":"User not found"}
     
 
-@router.post("/profile/update", status_code = 200, response_description="data updated")
+@router.put("/profile/update", status_code = 200, response_description="data updated")
 async def update_profile_data(data:ProfileDataSchema, response:Response, Authorize: AuthJWT = Depends()):
     
     Authorize.jwt_required()
