@@ -11,15 +11,10 @@ from datetime import date
 
 
 
-
-
 router = APIRouter()
 
 
-
-
-
-@router.get("/landing/page",status_code =200)
+@router.get("/start",status_code =200)
 async def admin_landing_page() -> dict:
     
     #Authorize.jwt_required()
@@ -63,7 +58,7 @@ async def admin_landing_page() -> dict:
           
     return data
 
-@router.get("/landing/page/affiliate-sales",status_code =200)
+@router.get("/affiliate/sales",status_code =200)
 async def total_affiliate_sales() -> dict:
     
     #Authorize.jwt_required()
@@ -159,10 +154,11 @@ async def approve_a_property(ID:PydanticObjectId,response:Response) -> dict:
         property_obj.status = "Approve"
         await property_obj.save()
 
-        return {"message":"Property has been Approved"}
-    except:
+        return {"message":"successful"}
+    except Exception as e:
         response.status_code = 400
-        return {"message":"Something Went Wrong"}
+        return {"message":f"{e}"}
+    
     
     
 @router.get("/reject/property/{ID}",status_code =201)
@@ -175,10 +171,11 @@ async def reject_a_property(ID:PydanticObjectId,response:Response) -> dict:
         property_obj.status = "Reject"
         await property_obj.save()
 
-        return {"message":"Property has been Rejected"}
-    except:
+        return {"message":"successful"}
+    
+    except Exception as e:
         response.status_code = 400
-        return {"message":"Something Went Wrong"}
+        return {"message":f"{e}"}
     
     
 @router.get("/all/affiliate",status_code =200)
@@ -215,7 +212,7 @@ async def add_an_affiliate(data:EmailSchema,response:Response) -> dict:
         user.created = today.strftime("%B %d, %Y")
         await user.save()
 
-        return {"message":"User Successfully added as an affiliate"}
-    except:
+        return {"message":" successful"}
+    except Exception as e:
         response.status_code = 400
-        return {"message":"Something Went Wrong"}
+        return {"message":f"{e}"}

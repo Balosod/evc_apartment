@@ -89,7 +89,7 @@ async def book_a_property(data:BookingSchema,itemID:PydanticObjectId,response:Re
                                             )
                 await each_statistic_data.create()
             
-        return {"message":"Booking successfully added"}
+        return {"message":"successful"}
     else:
         response.status_code = 400
         return HTTPException(
