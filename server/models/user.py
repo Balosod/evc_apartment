@@ -15,7 +15,7 @@ class User(Document):
     last_name: Optional[str] = None
     bio:Optional[str] = None
     email: EmailStr
-    phone:Optional[str] = None
+    phone:Optional[int] = None
     address:Optional[str] = None
     img:Optional[str] = None
     password: str
@@ -50,7 +50,7 @@ class UserRegistrationSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     email: EmailStr
-    phone:Optional[str] = None
+    phone:Optional[int] = None
     password: str
     account_type:Optional[accountType] = None
 
@@ -73,7 +73,7 @@ class UserOut(BaseModel):
     last_name: Optional[str]
     bio: Optional[str]
     email: EmailStr
-    phone: Optional[str]
+    phone: Optional[int]
     address: Optional[str]
     img: Optional[str]
     account_type: Optional[str]
@@ -99,7 +99,7 @@ class ProfileDataSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     email: Optional[EmailStr] = None
-    phone:Optional[str] = None
+    phone:Optional[int] = None
     address:Optional[str] = None
     bio:Optional[str] = None
     

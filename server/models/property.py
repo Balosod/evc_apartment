@@ -10,13 +10,7 @@ class ProperyType(str,Enum):
     EVC_Apartment = "EVC_Apartment"
     EVCA_Affiliate = "EVCA_Affiliate"
     
-class ProperyCondition(str,Enum):
-    Available = "Available"
-    Occupied = "Occupied"
 
-class ProperyStatus(str,Enum):
-    Approve = "Approve"
-    Reject = "Reject"
     
 class PropertyCategory(str,Enum):
     Apartment = "Apartment"
@@ -62,10 +56,12 @@ class Property(Document):
     two_showers:Optional[bool] = False
     luxury_bedroom:Optional[bool] = False
     kitchen:Optional[bool] = False
+    availability:Optional[bool] = True
+    approval_status:Optional[bool] = False
+    price:Optional[int]
+    capacity:Optional[int]
     discount: List[Link[ApplicableDiscount]] = None
-    condition:Optional[ProperyCondition] = ProperyCondition.Available
-    status:Optional[ProperyStatus] = ProperyStatus.Reject
-    order:Optional[int] = 0
+    booking_count:Optional[int] = 0
     owner_id: PydanticObjectId
     image: Optional[List[Link[PropertyImages]]] = None
     video: Optional[List[Link[PropertyVideos]]] = None
@@ -89,6 +85,8 @@ class PropertySchema(BaseModel):
     two_showers:Optional[bool] = False
     luxury_bedroom:Optional[bool] = False
     kitchen:Optional[bool] = False
+    price:str
+    capacity:Optional[int]
     discount: Optional[List[ApplicableDiscount]]
     images:Optional[list] = None
     videos:Optional[list] = None

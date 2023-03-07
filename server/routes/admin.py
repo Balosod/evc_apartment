@@ -120,7 +120,7 @@ async def all_approved_property() -> dict:
     
     #Authorize.jwt_required()
     
-    all_property = await Property.find(Property.status == "Approve", fetch_links=True).to_list()
+    all_property = await Property.find(Property.approval_status == True, fetch_links=True).to_list()
 
     return all_property
 
@@ -129,7 +129,7 @@ async def all_approved_property() -> dict:
     
     #Authorize.jwt_required()
     
-    all_property = await Property.find(Property.status == "Reject", fetch_links=True).to_list()
+    all_property = await Property.find(Property.approval_status == False, fetch_links=True).to_list()
 
     return all_property
 
@@ -151,7 +151,7 @@ async def approve_a_property(ID:PydanticObjectId,response:Response) -> dict:
     
     try:
         property_obj = await Property.find_one(Property.id == ID,fetch_links=True)
-        property_obj.status = "Approve"
+        property_obj.approval_status = True
         await property_obj.save()
 
         return {"message":"successful"}
@@ -168,7 +168,7 @@ async def reject_a_property(ID:PydanticObjectId,response:Response) -> dict:
     
     try:
         property_obj = await Property.find_one(Property.id == ID,fetch_links=True)
-        property_obj.status = "Reject"
+        property_obj.approval_status = False
         await property_obj.save()
 
         return {"message":"successful"}
@@ -212,7 +212,7 @@ async def add_an_affiliate(data:EmailSchema,response:Response) -> dict:
         user.created = today.strftime("%B %d, %Y")
         await user.save()
 
-        return {"message":" successful"}
+        return {"message":"successful"}
     except Exception as e:
         response.status_code = 400
         return {"message":f"{e}"}
