@@ -14,7 +14,7 @@ from datetime import date
 router = APIRouter()
 
 
-@router.get("/start",status_code =200)
+@router.get("/dashboard/stats",status_code =200)
 async def admin_landing_page() -> dict:
     
     #Authorize.jwt_required()
