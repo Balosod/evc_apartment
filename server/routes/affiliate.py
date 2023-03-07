@@ -15,7 +15,7 @@ router = APIRouter()
 
 
 
-@router.get("/landing/page",status_code =200)
+@router.get("/start",status_code =200)
 async def admin_landing_page_affiliate( Authorize: AuthJWT = Depends()) -> dict:
     
     Authorize.jwt_required()
