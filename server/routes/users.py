@@ -37,12 +37,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
 def user_data(user):
-    return {"first_name":user.first_name,
+    return {"id":user.id,
+            "first_name":user.first_name,
             "last_name":user.last_name,
             "bio":user.bio,
             "email":user.email,
             "phone":user.phone,
             "address":user.address,
+            "img":user.img,
             "account_type":user.account_type,
             "is_admin":user.is_admin,
             "is_affiliate":user.is_affiliate,

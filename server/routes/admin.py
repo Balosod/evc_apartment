@@ -120,18 +120,26 @@ async def all_approved_property() -> dict:
     
     #Authorize.jwt_required()
     
+    data = {"count":"","data":""}
     all_property = await Property.find(Property.approval_status == True, fetch_links=True).to_list()
-
-    return all_property
+    
+    data["count"] = len(all_property)
+    data["data"] = all_property
+    
+    return data
 
 @router.get("/all/unapproved/property",status_code =200)
 async def all_approved_property() -> dict:
     
     #Authorize.jwt_required()
     
+    data = {"count":"","data":""}
     all_property = await Property.find(Property.approval_status == False, fetch_links=True).to_list()
 
-    return all_property
+    data["count"] = len(all_property)
+    data["data"] = all_property
+    
+    return data
 
 
 @router.get("/all/property",status_code =200)
@@ -139,10 +147,13 @@ async def all_property() -> dict:
     
     #Authorize.jwt_required()
     
+    data = {"count":"","data":""}
     all_property = await Property.find(fetch_links=True).to_list()
 
-    return all_property
-
+    data["count"] = len(all_property)
+    data["data"] = all_property
+    
+    return data
 
 @router.get("/approve/property/{ID}",status_code =201)
 async def approve_a_property(ID:PydanticObjectId,response:Response) -> dict:

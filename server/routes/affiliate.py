@@ -87,8 +87,13 @@ async def all_property(response:Response, Authorize: AuthJWT = Depends()) -> dic
     user = await User.find_one(User.email == current_user)
     
     if user.is_affiliate:
+        data = {"count":"","data":""}
         all_property = await Property.find(Property.owner_id == user.id, fetch_links=True).to_list()
-        return all_property
+        
+        data["count"] = len(all_property)
+        data["data"] = all_property
+        
+        return data
     else:
         response.status_code = 401
         return {"message":"not an affiliate"}
