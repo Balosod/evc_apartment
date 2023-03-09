@@ -55,10 +55,11 @@ async def create_property(
             await price_obj.create()
             price_list.append(price_obj)
 
+        nearest_area = data.nearest_area.lower()
         evc_property = Property(
             name=data.name,
             description=data.description,
-            nearest_area=data.nearest_area,
+            nearest_area=nearest_area,
             category=data.category,
             property_type=evc_property_type,
             airport=data.airport,
@@ -89,8 +90,7 @@ async def create_property(
 @router.get("/all", status_code=200)
 async def get_all_property(location: str = None, capacity: int = None) -> dict:
     if location:
-        properties = await Property.find(Property.nearest_area == location).to_list()
-        return properties
+        return await Property.find(Property.nearest_area == location).to_list()
     return await Property.find_all().to_list()
 
 

@@ -45,6 +45,7 @@ class Property(Document):
     name: str
     description: str
     nearest_area: str
+    location: Optional[str]
     category: PropertyCategory
     property_type: ProperyType = ProperyType.EVCA_Affiliate
     airport: Optional[bool] = False
@@ -74,6 +75,8 @@ class PropertySchema(BaseModel):
     name: str
     description: str
     nearest_area: str
+    location: Optional[str]
+    capacity: Optional[int]
     category: PropertyCategory
     airport: Optional[bool] = False
     breakfast: Optional[bool] = False
