@@ -1,8 +1,7 @@
 from fastapi import HTTPException
-from . helpers import EmailManager, OTPManager
+from .helpers import EmailManager, OTPManager
 from ..utils.helpers import api_instance
 from ..models.user import User
-
 
 
 async def verify_OTP(email: str, otp: str):
@@ -10,7 +9,9 @@ async def verify_OTP(email: str, otp: str):
     if not user:
         raise HTTPException(status_code=400, detail="This email is invalid.")
     if not OTPManager.verify(otp):
-        raise HTTPException(status_code=400, detail="This otp is invalid or has expired.")
+        raise HTTPException(
+            status_code=400, detail="This otp is invalid or has expired."
+        )
     user.active = True
     await user.save()
     return "success"
@@ -21,13 +22,9 @@ async def resend_OTP(email: str):
     if not user:
         raise HTTPException(status_code=400, detail="This email is invalid.")
     try:
-        send_smtp_email  = EmailManager.send_otp_msg(user.email)
+        send_smtp_email = EmailManager.send_otp_msg(user.email)
         api_response = api_instance.send_transac_email(send_smtp_email)
         return "success"
-    
+
     except:
-        return HTTPException(
-            status_code=400,
-            detail="Mail not send"
-        )
-    
+        return HTTPException(status_code=400, detail="Mail not send")

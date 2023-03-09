@@ -16,9 +16,6 @@ from .settings import CONFIG_SETTINGS
 from fastapi.middleware.cors import CORSMiddleware
 
 
-
-
-
 app = FastAPI()
 
 
@@ -30,16 +27,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @AuthJWT.load_config
 def get_config():
     return CONFIG_SETTINGS
 
+
 @app.exception_handler(AuthJWTException)
 def authjwt_exception_handler(request: Request, exc: AuthJWTException):
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"detail": exc.message}
-    )
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.message})
 
 
 app.include_router(UserRouter, tags=["Users"], prefix="/users")
@@ -60,9 +56,5 @@ async def start_db():
 
 @app.get("/", tags=["Root"])
 async def read_root() -> dict:
-    
+
     return {"message": "Welcome to EVC_Apartment"}
-
-
-
-

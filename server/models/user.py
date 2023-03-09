@@ -7,53 +7,53 @@ from enum import Enum
 
 today = date.today()
 
-class accountType(str,Enum):
+
+class accountType(str, Enum):
     personal_account = "personal"
     cooperate_account = "corporate"
-    
+
+
 class User(Document):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     bio: Optional[str] = None
     email: EmailStr
-    phone:Optional[int] = None
-    address:Optional[str] = None
-    img:Optional[str] = None
+    phone: Optional[int] = None
+    address: Optional[str] = None
+    img: Optional[str] = None
     password: str
     account_type: Optional[accountType] = None
     is_admin: bool = False
     is_affiliate: bool = False
     created: str = today.strftime("%B %d, %Y")
     active: bool = False
-    
-    @validator('password', always=True)
+
+    @validator("password", always=True)
     def validate_password(cls, password):
-        
+
         min_length = 8
-        errors = ''
+        errors = ""
         if len(password) < min_length:
-            errors += 'Password must be at least 8 characters long. '
+            errors += "Password must be at least 8 characters long. "
         if not any(character.islower() for character in password):
-            errors += 'Password should contain at least one lowercase character.'
+            errors += "Password should contain at least one lowercase character."
         if errors:
             raise ValueError(errors)
-            
+
         return password
-    
 
     class Settings:
         name = "users"
 
-    
 
-   
 class UserRegistrationSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     email: EmailStr
-    phone:Optional[int] = None
+    phone: Optional[int] = None
     password: str
-    account_type:Optional[accountType] = None
+    account_type: Optional[accountType] = None
+
 
 class UserLogin(BaseModel):
     email: EmailStr = Field(...)
@@ -61,13 +61,13 @@ class UserLogin(BaseModel):
 
     class Config:
         schema_extra = {
-            "example" : {
+            "example": {
                 "email": "johndoe@mail.com",
                 "password": "yoursecretpa55word",
             }
         }
-        
-        
+
+
 class UserOut(BaseModel):
     id: PydanticObjectId = Field()
     first_name: Optional[str]
@@ -79,40 +79,40 @@ class UserOut(BaseModel):
     img: Optional[str]
     account_type: Optional[str]
     is_admin: bool
-    is_affiliate: bool 
-    created: str 
+    is_affiliate: bool
+    created: str
     active: bool
 
 
 class UserCollection(BaseCollectionModel[UserOut]):
     pass
-    
+
+
 class OtpSchema(BaseModel):
     email: EmailStr = Field(...)
     otp: str = Field(...)
-    
-    
+
+
 class EmailSchema(BaseModel):
     email: EmailStr = Field(...)
-    
+
 
 class ImageSchema(BaseModel):
     image: str
-    
+
+
 class ProfileDataSchema(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     email: Optional[EmailStr] = None
-    phone:Optional[int] = None
-    address:Optional[str] = None
-    bio:Optional[str] = None
-    
-    
-    
+    phone: Optional[int] = None
+    address: Optional[str] = None
+    bio: Optional[str] = None
+
 
 def SuccessResponseModel(data, code, message):
-    return { "data": [data], "code": code, "message": message }
+    return {"data": [data], "code": code, "message": message}
 
 
 def ErrorResponseModel(error, code, message):
-    return { "error": error, "code": code, "message": message }
+    return {"error": error, "code": code, "message": message}
