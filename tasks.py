@@ -8,10 +8,7 @@ from server.models.booking_history import Booking
 from datetime import date
 
 
-
-
-
-huey = SqliteHuey(filename='/tmp/demo.db')
+huey = SqliteHuey(filename="/tmp/demo.db")
 
 
 async def init_db():
@@ -27,18 +24,16 @@ async def async_function():
     date = today.strftime("%d/%m/%Y")
     booked_property = await Booking.find().to_list()
     for item in booked_property:
-        if (item.check_in_date == date and item.check_in_number == 0):
+        if item.check_in_date == date and item.check_in_number == 0:
             new_check_in = await Booking.get(item.id)
             new_check_in.check_in_number = 1
-            await new_check_in.save()  
-        if (item.check_out_date == date and item.check_out_number == 0):
+            await new_check_in.save()
+        if item.check_out_date == date and item.check_out_number == 0:
             new_check_out = await Booking.get(item.id)
             new_check_out.check_out_number = 1
             await new_check_out.save()
 
 
-@huey.periodic_task(crontab(minute='*/1'))
+@huey.periodic_task(crontab(minute="*/1"))
 def add():
     asyncio.run(async_function())
-
-  

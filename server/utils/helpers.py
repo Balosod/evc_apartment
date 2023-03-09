@@ -7,20 +7,24 @@ from sib_api_v3_sdk.rest import ApiException
 
 
 configuration = sib_api_v3_sdk.Configuration()
-configuration.api_key['api-key'] = CONFIG_SETTINGS.SEND_IN_BLUE_API_KEY
-api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
-
-
-mail_env = Environment(
-    loader=PackageLoader('server', 'templates'),
-    autoescape=select_autoescape(['html', 'xml'])
+configuration.api_key["api-key"] = CONFIG_SETTINGS.SEND_IN_BLUE_API_KEY
+api_instance = sib_api_v3_sdk.TransactionalEmailsApi(
+    sib_api_v3_sdk.ApiClient(configuration)
 )
 
 
+mail_env = Environment(
+    loader=PackageLoader("server", "templates"),
+    autoescape=select_autoescape(["html", "xml"]),
+)
 
 
 class OTPManager:
-    totp = pyotp.TOTP(CONFIG_SETTINGS.OTP_SECRET_KEY, interval=int(CONFIG_SETTINGS.OTP_EXPIRES), digits=int(CONFIG_SETTINGS.OTP_DIGIT))
+    totp = pyotp.TOTP(
+        CONFIG_SETTINGS.OTP_SECRET_KEY,
+        interval=int(CONFIG_SETTINGS.OTP_EXPIRES),
+        digits=int(CONFIG_SETTINGS.OTP_DIGIT),
+    )
 
     @classmethod
     def generate(cls):
@@ -49,13 +53,13 @@ class EmailManager:
             "welcome": {
                 "subject": "EVC_Apartment: Verify your account",
                 "template": "welcome",
-                "message": f"Hi there, welcome to your account. Use this OTP to continue: {otp}."
+                "message": f"Hi there, welcome to your account. Use this OTP to continue: {otp}.",
             },
             "otp": {
-                "subject": "EVC_Apartment: OTP Verification",                           
+                "subject": "EVC_Apartment: OTP Verification",
                 "template": "otp",
-                "message": f"Hi there, to verify your action, kindly use this OTP to continue: {otp}."
-            }
+                "message": f"Hi there, to verify your action, kindly use this OTP to continue: {otp}.",
+            },
         }
 
         if not message_type in MSG_TYPES.keys():
@@ -64,19 +68,15 @@ class EmailManager:
         subject = MSG_TYPES[message_type]["subject"]
         template = MSG_TYPES[message_type]["template"]
         plain_message = MSG_TYPES[message_type]["message"]
-        
-        template = mail_env.get_template(f'{template}.html')
-        
-        html = template.render(
-                email= email,
-                subject=subject,
-                otp=otp if otp else ''
-        )
-        sender = {"name":"EVC_Apartment","email":"evcapartment@gmail.com"}
-        replyTo = {"name":"EVC_Apartment","email":"evcapartment@gmail.com"}
-        to = [{"email":f"{email}"}]
-        send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, reply_to=replyTo,  html_content=html, sender=sender, subject=subject)
-        
-        return send_smtp_email
-        
 
+        template = mail_env.get_template(f"{template}.html")
+
+        html = template.render(email=email, subject=subject, otp=otp if otp else "")
+        sender = {"name": "EVC_Apartment", "email": "evcapartment@gmail.com"}
+        replyTo = {"name": "EVC_Apartment", "email": "evcapartment@gmail.com"}
+        to = [{"email": f"{email}"}]
+        send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+            to=to, reply_to=replyTo, html_content=html, sender=sender, subject=subject
+        )
+
+        return send_smtp_email
